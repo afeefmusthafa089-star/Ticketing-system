@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>View Tickets</title>
+    <title>All Tickets</title>
 </head>
 <body>
-    <h1>All Tickets</h1>
+    <h2>All Tickets</h2>
 
-    <table border="1" cellpadding="10">
+    <table border="1">
         <tr>
             <th>ID</th>
             <th>Name</th>
@@ -14,7 +14,7 @@
             <th>Issue</th>
             <th>Priority</th>
             <th>Status</th>
-            <th>Created At</th>
+            <th>Date</th>
         </tr>
 
         {% for ticket in tickets %}
@@ -31,6 +31,6 @@
     </table>
 
     <br>
-    <a href="/">Back to Create Ticket</a>
+    <a href="/">Back</a>
 </body>
 </html>
