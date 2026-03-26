@@ -5,7 +5,7 @@ import os
 
 app = Flask(__name__)
 
-DB_PATH = "tickets.db"
+DB_PATH = "/tmp/tickets.db"
 
 # Create database
 def init_db():
