@@ -3,7 +3,7 @@ import sqlite3
 from datetime import datetime
 import os
 
-app = Flask(_name_)
+app = Flask(__name__)
 
 DB_PATH = "tickets.db"
 
@@ -69,5 +69,5 @@ def view():
     return render_template('view.html', tickets=tickets)
 
 # ✅ FIXED HERE
-if _name_ == '_main_':
+if __name__ == '_main_':
     app.run(host='0.0.0.0', port=5000)
