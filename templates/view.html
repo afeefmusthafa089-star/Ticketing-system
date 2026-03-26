@@ -5,7 +5,8 @@
 </head>
 <body>
     <h2>All Tickets</h2>
-    <table border="1">
+
+    <table border="1" cellpadding="10">
         <tr>
             <th>ID</th>
             <th>Name</th>
@@ -14,6 +15,7 @@
             <th>Priority</th>
             <th>Status</th>
         </tr>
+
         {% for t in tickets %}
         <tr>
             <td>{{ t[0] }}</td>
