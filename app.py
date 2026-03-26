@@ -1,12 +1,15 @@
 from flask import Flask, render_template, request, redirect
 import sqlite3
 from datetime import datetime
+import os
 
-app = Flask(__name__)
+app = Flask(_name_)
+
+DB_PATH = "tickets.db"
 
 # Create database
 def init_db():
-    conn = sqlite3.connect('tickets.db')
+    conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     
     cursor.execute('''
@@ -26,7 +29,7 @@ def init_db():
 
 init_db()
 
-# Home page (form)
+# Home page
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -39,13 +42,13 @@ def add_ticket():
     issue = request.form['issue']
     priority = request.form['priority']
     
-    conn = sqlite3.connect('tickets.db')
+    conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     
     cursor.execute('''
         INSERT INTO tickets (name, email, issue, priority, status, created_at)
         VALUES (?, ?, ?, ?, ?, ?)
-    ''', (name, email, issue, priority, "Open", datetime.now()))
+    ''', (name, email, issue, priority, "Open", str(datetime.now())))
     
     conn.commit()
     conn.close()
@@ -55,7 +58,7 @@ def add_ticket():
 # View tickets
 @app.route('/view')
 def view():
-    conn = sqlite3.connect('tickets.db')
+    conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     
     cursor.execute("SELECT * FROM tickets")
@@ -65,5 +68,6 @@ def view():
     
     return render_template('view.html', tickets=tickets)
 
-if __name__ == '_main_':
+# ✅ FIXED HERE
+if _name_ == '_main_':
     app.run(host='0.0.0.0', port=5000)
