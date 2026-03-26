@@ -2,11 +2,90 @@
 <html>
 <head>
     <title>All Tickets</title>
-</head>
-<body>
-    <h2>All Tickets</h2>
 
-    <table border="1">
+    <style>
+        body{
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(to right, #667eea, #764ba2);
+            margin:0;
+            padding:0;
+        }
+
+        .container{
+            width: 90%;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0px 8px 20px rgba(0,0,0,0.2);
+        }
+
+        h1{
+            text-align:center;
+            color:#444;
+            margin-bottom:25px;
+        }
+
+        table{
+            width:100%;
+            border-collapse: collapse;
+        }
+
+        th{
+            background:#667eea;
+            color:white;
+            padding:12px;
+            text-align:left;
+        }
+
+        td{
+            padding:12px;
+            border-bottom:1px solid #ddd;
+        }
+
+        tr:hover{
+            background:#f2f2f2;
+            transition:0.3s;
+        }
+
+        .status{
+            padding:5px 10px;
+            border-radius:20px;
+            font-size:12px;
+            color:white;
+        }
+
+        .open{
+            background:#28a745;
+        }
+
+        .low{
+            background:#ffc107;
+            color:black;
+        }
+
+        .back-btn{
+            display:inline-block;
+            margin-top:20px;
+            padding:10px 20px;
+            background:#667eea;
+            color:white;
+            text-decoration:none;
+            border-radius:8px;
+        }
+
+        .back-btn:hover{
+            background:#5a67d8;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>🎫 All Tickets</h1>
+
+    <table>
         <tr>
             <th>ID</th>
             <th>Name</th>
@@ -17,20 +96,22 @@
             <th>Date</th>
         </tr>
 
-        {% for ticket in tickets %}
+        {% for t in tickets %}
         <tr>
-            <td>{{ ticket[0] }}</td>
-            <td>{{ ticket[1] }}</td>
-            <td>{{ ticket[2] }}</td>
-            <td>{{ ticket[3] }}</td>
-            <td>{{ ticket[4] }}</td>
-            <td>{{ ticket[5] }}</td>
-            <td>{{ ticket[6] }}</td>
+            <td>{{t.id}}</td>
+            <td>{{t.name}}</td>
+            <td>{{t.email}}</td>
+            <td>{{t.issue}}</td>
+            <td><span class="status low">{{t.priority}}</span></td>
+            <td><span class="status open">{{t.status}}</span></td>
+            <td>{{t.date}}</td>
         </tr>
         {% endfor %}
     </table>
 
-    <br>
-    <a href="/">Back</a>
+    <a href="/" class="back-btn">⬅ Back</a>
+
+</div>
+
 </body>
 </html>
