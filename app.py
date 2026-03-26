@@ -6,16 +6,18 @@ app = Flask(__name__)
 def init_db():
     conn = sqlite3.connect('tickets.db')
     cursor = conn.cursor()
+
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS tickets (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT,
-            email TEXT,
-            issue TEXT,
-            priority TEXT,
-            status TEXT
+            name TEXT NOT NULL,
+            email TEXT NOT NULL,
+            issue TEXT NOT NULL,
+            priority TEXT NOT NULL,
+            status TEXT NOT NULL
         )
     ''')
+
     conn.commit()
     conn.close()
 
@@ -34,10 +36,12 @@ def submit():
 
     conn = sqlite3.connect('tickets.db')
     cursor = conn.cursor()
-    cursor.execute(
-        "INSERT INTO tickets (name, email, issue, priority, status) VALUES (?, ?, ?, ?, ?)",
-        (name, email, issue, priority, "Open")
-    )
+
+    cursor.execute('''
+        INSERT INTO tickets (name, email, issue, priority, status)
+        VALUES (?, ?, ?, ?, ?)
+    ''', (name, email, issue, priority, 'Open'))
+
     conn.commit()
     conn.close()
 
@@ -47,10 +51,14 @@ def submit():
 def admin():
     conn = sqlite3.connect('tickets.db')
     cursor = conn.cursor()
+
     cursor.execute("SELECT * FROM tickets")
     tickets = cursor.fetchall()
+
     conn.close()
+
     return render_template('admin.html', tickets=tickets)
 
 if __name__ == '__main__':
     app.run(debug=True)
+    
