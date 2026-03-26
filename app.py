@@ -56,5 +56,5 @@ def view_tickets():
 
     return render_template('view.html', tickets=tickets)
 
-if __name__ == '__main__':
-    app.run(debug=True)
+if __name__ == '_main_':
+    app.run(host='0.0.0.0', port=5000)
