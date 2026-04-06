@@ -4,11 +4,15 @@
     <title>Create Ticket</title>
 </head>
 <body>
-    <h1>Create Ticket</h1>
-    <form action="/submit" method="POST">
-        <input type="text" name="name" placeholder="Your Name"><br><br>
-        <textarea name="issue" placeholder="Describe issue"></textarea><br><br>
+    <h2>Create Ticket</h2>
+
+    <form method="POST">
+        <input type="text" name="name" placeholder="Your Name" required><br><br>
+        <textarea name="issue" placeholder="Describe issue" required></textarea><br><br>
         <button type="submit">Submit</button>
     </form>
+
+    <br>
+    <a href="/view">View Tickets</a>
 </body>
 </html>
