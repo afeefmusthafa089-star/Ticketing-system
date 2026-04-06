@@ -1,29 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Ticket System</title>
+    <title>Create Ticket</title>
 </head>
 <body>
-    <h2>Create Ticket</h2>
-
+    <h1>Create Ticket</h1>
     <form action="/submit" method="POST">
-        <label>Name:</label>
-        <input type="text" name="name" required><br><br>
-
-        <label>Email:</label>
-        <input type="email" name="email" required><br><br>
-
-        <label>Issue:</label>
-        <textarea name="issue" required></textarea><br><br>
-
-        <label>Priority:</label>
-        <select name="priority" required>
-            <option value="Low">Low</option>
-            <option value="Medium">Medium</option>
-            <option value="High">High</option>
-        </select><br><br>
-
-        <button type="submit">Submit Ticket</button>
+        <input type="text" name="name" placeholder="Your Name"><br><br>
+        <textarea name="issue" placeholder="Describe issue"></textarea><br><br>
+        <button type="submit">Submit</button>
     </form>
 </body>
 </html>
