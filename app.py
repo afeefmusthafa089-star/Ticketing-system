@@ -1,27 +1,24 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 import sqlite3
+from datetime import datetime
+import os
 
 app = Flask(__name__)
 
 def init_db():
     conn = sqlite3.connect('tickets.db')
     cursor = conn.cursor()
-
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS tickets (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            email TEXT NOT NULL,
-            issue TEXT NOT NULL,
-            priority TEXT NOT NULL,
-            status TEXT NOT NULL
+            name TEXT,
+            issue TEXT,
+            status TEXT,
+            created_at TEXT
         )
     ''')
-
     conn.commit()
     conn.close()
-
-init_db()
 
 @app.route('/')
 def index():
@@ -30,35 +27,30 @@ def index():
 @app.route('/submit', methods=['POST'])
 def submit():
     name = request.form['name']
-    email = request.form['email']
     issue = request.form['issue']
-    priority = request.form['priority']
 
     conn = sqlite3.connect('tickets.db')
     cursor = conn.cursor()
-
-    cursor.execute('''
-        INSERT INTO tickets (name, email, issue, priority, status)
-        VALUES (?, ?, ?, ?, ?)
-    ''', (name, email, issue, priority, 'Open'))
-
+    cursor.execute(
+        "INSERT INTO tickets (name, issue, status, created_at) VALUES (?, ?, ?, ?)",
+        (name, issue, 'Open', datetime.now())
+    )
     conn.commit()
     conn.close()
 
-    return "Ticket Submitted Successfully!"
+    return redirect('/tickets')
 
-@app.route('/admin')
-def admin():
+@app.route('/tickets')
+def tickets():
     conn = sqlite3.connect('tickets.db')
     cursor = conn.cursor()
-
     cursor.execute("SELECT * FROM tickets")
-    tickets = cursor.fetchall()
-
+    data = cursor.fetchall()
     conn.close()
 
-    return render_template('admin.html', tickets=tickets)
+    return render_template('tickets.html', tickets=data)
 
 if __name__ == '__main__':
-    app.run(debug=True)
-    
+    init_db()
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
