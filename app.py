@@ -5,10 +5,13 @@ import os
 
 app = Flask(__name__)
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+db_path = os.path.join(BASE_DIR, "tickets.db")
+
 def init_db():
-    conn = sqlite3.connect('tickets.db')
+    conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
-    cursor.execute('''
+    cursor.execute("""
         CREATE TABLE IF NOT EXISTS tickets (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT,
@@ -16,12 +19,14 @@ def init_db():
             status TEXT,
             created_at TEXT
         )
-    ''')
+    """)
     conn.commit()
     conn.close()
 
-@app.route('/')
-def index():
+init_db()
+
+@app.route('/', methods=['GET'])
+def home():
     return render_template('index.html')
 
 @app.route('/submit', methods=['POST'])
@@ -29,28 +34,26 @@ def submit():
     name = request.form['name']
     issue = request.form['issue']
 
-    conn = sqlite3.connect('tickets.db')
+    conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
-    cursor.execute(
-        "INSERT INTO tickets (name, issue, status, created_at) VALUES (?, ?, ?, ?)",
-        (name, issue, 'Open', datetime.now())
-    )
+    cursor.execute("""
+        INSERT INTO tickets (name, issue, status, created_at)
+        VALUES (?, ?, ?, ?)
+    """, (name, issue, 'Open', datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
     conn.commit()
     conn.close()
 
-    return redirect('/tickets')
+    return redirect('/view')
 
-@app.route('/tickets')
-def tickets():
-    conn = sqlite3.connect('tickets.db')
+@app.route('/view', methods=['GET'])
+def view():
+    conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM tickets")
-    data = cursor.fetchall()
+    tickets = cursor.fetchall()
     conn.close()
 
-    return render_template('tickets.html', tickets=data)
+    return render_template('view.html', tickets=tickets)
 
 if __name__ == '__main__':
-    init_db()
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(debug=True)
