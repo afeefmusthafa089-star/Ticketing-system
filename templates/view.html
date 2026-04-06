@@ -1,18 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Tickets</title>
+    <title>View Tickets</title>
 </head>
 <body>
-    <h1>All Tickets</h1>
-    <a href="/">Create New</a>
+    <h2>All Tickets</h2>
 
-    <ul>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Issue</th>
+            <th>Status</th>
+            <th>Date</th>
+        </tr>
+
         {% for ticket in tickets %}
-            <li>
-                {{ ticket[1] }} - {{ ticket[2] }} - {{ ticket[3] }}
-            </li>
+        <tr>
+            <td>{{ ticket[0] }}</td>
+            <td>{{ ticket[1] }}</td>
+            <td>{{ ticket[2] }}</td>
+            <td>{{ ticket[3] }}</td>
+            <td>{{ ticket[4] }}</td>
+        </tr>
         {% endfor %}
-    </ul>
+    </table>
+
+    <br>
+    <a href="/">Create New Ticket</a>
 </body>
 </html>
