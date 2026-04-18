@@ -3,10 +3,10 @@ import sqlite3
 from datetime import datetime
 import os
 
-app = Flask(_name_)
+app = Flask(__name__)
 app.secret_key = "mysecretkey"
 
-BASE_DIR = os.path.dirname(os.path.abspath(_file_))
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 db_path = os.path.join(BASE_DIR, "tickets.db")
 
 def init_db():
@@ -88,5 +88,5 @@ def view():
 
     return render_template('view.html', tickets=tickets)
 
-if _name_ == '_main_':
+if __name__ == '__main__':
     app.run(debug=True)
