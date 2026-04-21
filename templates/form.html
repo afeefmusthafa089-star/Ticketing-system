@@ -1,1 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ticketing System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background: #f4f8fc;
+        }
+        .container {
+            max-width: 700px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.08);
+        }
+        h2 {
+            color: #0b5ed7;
+        }
+        input, textarea, select, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 8px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background: #0b5ed7;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #094db1;
+        }
+        #chatbox {
+            border: 1px solid #ccc;
+            padding: 10px;
+            height: 250px;
+            overflow-y: auto;
+            background: #fafafa;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .chat-user {
+            color: #0b5ed7;
+            font-weight: bold;
+        }
+        .chat-bot {
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Create Ticket</h2>
 
+        <form action="/submit" method="POST">
+            <label>Name:</label>
+            <input type="text" name="name" required>
+
+            <label>Email:</label>
+            <input type="email" name="email" required>
+
+            <label>Issue:</label>
+            <textarea name="issue" required></textarea>
+
+            <label>Priority:</label>
+            <select name="priority" required>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+            </select>
+
+            <button type="submit">Submit Ticket</button>
+        </form>
+
+        <hr>
+
+        <h2>AI Support Chatbot</h2>
+        <div id="chatbox"></div>
+
+        <input type="text" id="userMessage" placeholder="Ask something...">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+
+    <script>
+        async function sendMessage() {
+            const input = document.getElementById("userMessage");
+            const chatbox = document.getElementById("chatbox");
+            const message = input.value.trim();
+
+            if (!message) return;
+
+            chatbox.innerHTML += `<p><span class="chat-user">You:</span> ${message}</p>`;
+            input.value = "";
+
+            const response = await fetch("/chat", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ message: message })
+            });
+
+            const data = await response.json();
+            chatbox.innerHTML += `<p><span class="chat-bot">Bot:</span> ${data.reply}</p>`;
+            chatbox.scrollTop = chatbox.scrollHeight;
+        }
+    </script>
+</body>
+</html>
